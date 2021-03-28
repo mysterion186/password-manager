@@ -1,7 +1,7 @@
 import base64, json, csv,psycopg2
 from clipboard import copy
 
-# essaie gitignore 2 
+
 #mode 1 => encode the password
 #mode 2 => decode the password
 def code(text,mode):
