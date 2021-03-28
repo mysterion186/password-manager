@@ -2,6 +2,7 @@ import base64, json, csv,psycopg2
 from clipboard import copy
 
 # essaie gitignore
+#test gitignore 
 #use base64 to encode plain text
 #mode 1 => encode the password
 #mode 2 => decode the password
