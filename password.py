@@ -28,27 +28,31 @@ def connect():
     return con
 
 #return all datatbase's row which correspond to the user envy 
-def retrive(envy,table_name = 'password'):
-    con = connect()
-    cur = con.cursor()
-    cur.execute(f"SELECT * FROM {table_name} WHERE domain_name = '{envy}' OR login = '{envy}'")
-    count,choice = 0,0
-    password_list = []
-    result = ""
-    rows = cur.fetchall()
-    for row in rows :
-        result += str(count)+" "+row[1]+" " +row[2]+" " +row[3]+"\n"
-        password_list.append(row[3])
-        count +=1
-    print(result)
-    con.close()
-    if len(password_list) > 1 :
-        choice = int(input('Select the password you want to copy '))
-    elif len(password_list) == 0 :
-        print('There is no match ! ')
-        return False 
-    copy(code(password_list[choice],2))
-    return True
+def retrieve(envy,table_name = "password"):
+	con = connect()
+	cur = con.cursor()
+	if envy == "all":
+		cur.execute(f"SELECT * FROM {table_name}")
+	else :
+		cur.execute(f"SELECT * FROM {table_name} WHERE domain_name = '{envy}' OR login = '{envy}'")
+	count,choice = 0,0
+	password_list = []
+	result = ""
+	rows = cur.fetchall()
+	for row in rows :
+		result += str(count)+" "+row[1]+" " +row[2]+" " +row[3]+"\n"
+		password_list.append(row[3])
+		count +=1
+	print(result)
+	con.close()
+	if len(password_list) > 1 :
+		choice = int(input('Select the password you want to copy '))
+	elif len(password_list) == 0 :
+		print('There is no match ! ')
+		return False
+	copy(code(password_list[choice],2))
+	return True
+
 
 #add a row to the database
 def add(domain,login,password,table_name = 'password'):
@@ -59,6 +63,13 @@ def add(domain,login,password,table_name = 'password'):
     con.close()
     return True
 
+#update a row 
+def update(choice,new_password,table_name = 'password'):
+	con = connect()
+	cur = con.cursor()
+	cur.execute(f"UPDATE {table_name} SET password = '{code(new_password,1)}' WHERE domain_name = '{choice}'  or login = '{choice}'")
+	con.commit()
+	return True
 ################################################### DATABASE part  ################################################################################
 
 
@@ -68,6 +79,7 @@ def affiche_menu():
 	print("="*20+" Your options are : "+"="*20)
 	print("1. Get a password ")
 	print("2. Add a new entry ")
+	print("3. Update a password ")
 	print("q. To leave the Password Manager")
 	print("="*60)
 	return True
@@ -83,7 +95,7 @@ def menu():
 		choice = (input("What do you want to do ? "))
 		if choice == '1':
 			desire = input("Type the login or the domain name of what you want the password ")
-			retrive(desire)
+			retrieve(desire)
 		elif choice == '2' :
 			domain = input("Please  type the website domain ")
 			login = input("Please type your login ")
@@ -92,9 +104,14 @@ def menu():
 		elif choice == 'q' :
 			is_On=False
 			print("Thanks for using Password Manager :)")
+		elif choice == '3' :
+			desire = input("The domain name or the login you want to update ")
+			desire_password = input("Type your new desired password ")
+			update(desire,desire_password)
 		else :
 			print("I don't see what you want to do, please choose a number according to your need")
 	return True
 ################################################### PRINT  part    ################################################################################
 
+# update("test_domain","new_password")
 menu()
