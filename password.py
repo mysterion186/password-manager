@@ -15,7 +15,9 @@ def code(text,mode):
 		updated_text[2:-1]
 		return str(updated_text)[2:-1]
 
-
+#this part fix spaces issues 
+def valide_choice(envy):
+	return envy.replace(" ","")
 
 ################################################### DATABASE part  ################################################################################
 
@@ -51,6 +53,7 @@ def retrieve(envy,table_name = "password"):
 		print('There is no match ! ')
 		return False
 	copy(code(password_list[choice],2))
+	print("Your password has been saved in the clipboard ")
 	return True
 
 
@@ -94,20 +97,20 @@ def menu():
 		affiche_menu()
 		choice = (input("What do you want to do ? "))
 		if choice == '1':
-			desire = input("Type the login or the domain name of what you want the password ")
-			retrieve(desire)
+			desire = input("Type the login or the domain name of what you want the password\nor 'all' to see all the database password ")
+			retrieve(valide_choice(desire))
 		elif choice == '2' :
 			domain = input("Please  type the website domain ")
 			login = input("Please type your login ")
 			password = input("Please type your password ")
-			add(domain,login,password)
+			add(valide_choice(domain),valide_choice(login),password)
 		elif choice == 'q' :
 			is_On=False
 			print("Thanks for using Password Manager :)")
 		elif choice == '3' :
 			desire = input("The domain name or the login you want to update ")
 			desire_password = input("Type your new desired password ")
-			update(desire,desire_password)
+			update(valide_choice(desire),desire_password)
 		else :
 			print("I don't see what you want to do, please choose a number according to your need")
 	return True
