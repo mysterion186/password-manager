@@ -1,4 +1,4 @@
-import base64, json, csv,psycopg2
+import base64,psycopg2, random
 from clipboard import copy
 
 
@@ -19,6 +19,15 @@ def code(text,mode):
 def valide_choice(envy):
 	return envy.replace(" ","")
 
+#create a random password
+def create_password(number=15):
+	random_password = ""
+	characteres = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","!#&()+,-_/:;<>=?@"]
+	for i in range(number):
+		n= random.randint(0,3)
+		random_password += characteres[n][random.randint(0,len(characteres[n])-1)]
+	print(f"The automatically generated password is {random_password}")
+	return random_password
 ################################################### DATABASE part  ################################################################################
 
 #initialize connection between the python program and the postgre database
@@ -102,19 +111,32 @@ def menu():
 		elif choice == '2' :
 			domain = input("Please  type the website domain ")
 			login = input("Please type your login ")
-			password = input("Please type your password ")
+			need = input("Type 'y' if you want an automatically generated password ")
+			if need =='y':
+				number = int(input("The minimal lenght of the password "))
+				password = create_password(number)
+			else :
+				password = input("Please type your password ")
 			add(valide_choice(domain),valide_choice(login),password)
 		elif choice == 'q' :
 			is_On=False
 			print("Thanks for using Password Manager :)")
 		elif choice == '3' :
 			desire = input("The domain name or the login you want to update ")
-			desire_password = input("Type your new desired password ")
+			need = input("Type 'y' if you want an automatically generated password ")
+			if need =='y':
+				number = int(input("The minimal lenght of the password "))
+				desire_password = create_password(number)
+			else :
+				desire_password = input("Please type your password ")
 			update(valide_choice(desire),desire_password)
 		else :
 			print("I don't see what you want to do, please choose a number according to your need")
 	return True
 ################################################### PRINT  part    ################################################################################
 
-# update("test_domain","new_password")
+
 menu()
+"""characteres = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","!#&()+,-_/:;<>=?@"]
+test = "slGV<faj!h"
+print(create_password())"""
