@@ -103,6 +103,7 @@ def affiche_menu():
 	print("="*20+" Your options are : "+"="*20)
 	print("1. Get a password ")
 	print("2. Add a new entry ")
+	print("4. Get a random password")
 	print("q. To leave the Password Manager")
 	print("="*60)
 	return True
@@ -127,6 +128,8 @@ def menu():
 			login = input("Please type your login ")
 			password = input("Please type your password ")
 			add_entry(domain,login,password)
+		elif choice =="4":
+			pass 
 		elif choice == 'q' :
 			is_On=False
 			print("Thanks for using Password Manager :)")
